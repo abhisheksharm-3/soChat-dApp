@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ChatAppProvider } from "@/Context/ChatAppContext";
 import "./globals.css";
+import NavbarComponent from "@/Components/Navbar/Navbar";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ChatAppProvider>
+      <html lang="en" className="font-sans dark scrollbar-hide">
+        <body className={inter.className}><Providers><NavbarComponent />{children}</Providers></body>
+      </html>
+    </ChatAppProvider>
   );
 }
