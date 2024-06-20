@@ -1,6 +1,6 @@
 import { FC } from "react";
 import images from "../../../public/assets/assets/index.js";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 
 interface User {
@@ -21,6 +21,8 @@ const UserCard: FC<UserCardProps> = ({ el, addFriends, i }) => {
     const trimmedAddress = `${address.substring(0, 8)}...${address.substring(address.length - 8)}`;
     return trimmedAddress;
   };
+  const imageKey = `image${i + 1}` as keyof typeof images;
+  const selectedImage = images[imageKey] as StaticImageData;
 
   return (
     <Card className="py-4 border border-gray-200 rounded-lg shadow-md">
@@ -33,7 +35,7 @@ const UserCard: FC<UserCardProps> = ({ el, addFriends, i }) => {
           <Image
             alt="Card background"
             className="object-cover rounded-xl"
-            src={images[`image${i + 1}`]}
+            src={selectedImage}
             layout="fill"
           />
         </div>
