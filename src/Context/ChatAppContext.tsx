@@ -34,7 +34,7 @@ interface ChatAppContextType {
     name: string;
     accountAddress: string;
   }) => Promise<void>;
-  addFriends: (name: string, accountAddress: string) => Promise<void>;
+  addFriends: (data: {name: string, accountAddress: string}) => Promise<void>;
   sendMessage: (data: { msg: string; address: string }) => Promise<void>;
   readUser: (userAddress: string) => Promise<void>;
   account: string;
@@ -154,7 +154,13 @@ export const ChatAppProvider: FC<ChatAppProviderProps> = ({ children }) => {
     }
   };
 
-  const addFriends = async (name: string, accountAddress: string) => {
+  const addFriends = async ({
+    name,
+    accountAddress,
+  }: {
+    name: string;
+    accountAddress: string;
+  }) => {
     try {
       const contract = await connectingWithContract();
       const addMyFriend = await contract?.addFriend(accountAddress, name);

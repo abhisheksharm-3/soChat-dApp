@@ -1,5 +1,4 @@
-"use client";
-import { FC, useContext, useState, useEffect } from "react";
+import { FC, useContext, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import images from "../../../public/assets/assets/index.js";
 import { ChatAppContext } from "@/Context/ChatAppContext";
@@ -12,7 +11,7 @@ interface ModelProps {
   info: string;
   smallInfo: string;
   image: StaticImageData;
-  address: string;
+  address?: string; // Make address optional
   functionName: (data: {
     name: string;
     accountAddress: string;
@@ -30,7 +29,7 @@ const Model: FC<ModelProps> = ({
   functionName,
 }) => {
   const [name, setName] = useState("");
-  const [accountAddress, setAccountAddress] = useState(address);
+  const [accountAddress, setAccountAddress] = useState(address ?? ''); // Initialize with empty string if address is undefined
 
   const { loading } = useContext(ChatAppContext);
 
