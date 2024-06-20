@@ -14,6 +14,17 @@ import {
 } from "@/app/api/apiFeatures";
 import { Contract } from "ethers"; // Import Contract type from ethers
 
+interface User {
+  name: string;
+  pubkey: string;
+}
+
+export interface Message {
+  sender: string;      // The address of the sender
+  timestamp: number;   // The timestamp of the message
+  msg: string;         // The message content
+}
+
 // Define the context type
 interface ChatAppContextType {
   connectWallet: () => Promise<string | undefined>;
@@ -28,9 +39,9 @@ interface ChatAppContextType {
   readUser: (userAddress: string) => Promise<void>;
   account: string;
   userName: string;
-  friendLists: string[];
-  friendMsg: string[];
-  userList: string[];
+  friendLists: User[];
+  friendMsg: Message[];
+  userList: User[];
   loading: boolean;
   error: string;
   currentUserName: string;
@@ -67,10 +78,10 @@ interface ChatAppProviderProps {
 export const ChatAppProvider: FC<ChatAppProviderProps> = ({ children }) => {
   const [account, setAccount] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [friendLists, setFriendLists] = useState<string[]>([]);
-  const [friendMsg, setFriendMsg] = useState<string[]>([]);
+  const [friendLists, setFriendLists] = useState<User[]>([]);
+  const [friendMsg, setFriendMsg] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [userList, setUserList] = useState<string[]>([]);
+  const [userList, setUserList] = useState<User[]>([]); // Change userList type to User[]
   const [error, setError] = useState<string>("");
 
   const [currentUserName, setCurrentUserName] = useState<string>("");
@@ -93,10 +104,10 @@ export const ChatAppProvider: FC<ChatAppProviderProps> = ({ children }) => {
       setUserName(username || "");
       const friendList = await contract?.getMyFriendList();
       setFriendLists(friendList || []);
-      const userList = await contract?.getAllAppUser();
+      const userList = await contract?.getAllAppUsers();
       setUserList(userList || []);
     } catch (error) {
-      setError("Error while fetching data");
+      // setError("Error while fetching data");
     }
   };
 
@@ -132,8 +143,7 @@ export const ChatAppProvider: FC<ChatAppProviderProps> = ({ children }) => {
     accountAddress: string;
   }) => {
     try {
-      if (!name || !accountAddress)
-        throw new Error("Either name or address not provided");
+      if (!name) throw new Error("Either name or address not provided");
       const contract = await connectingWithContract();
       const getCreatedUser = await contract?.createAccount(name);
       setLoading(true);
@@ -141,14 +151,12 @@ export const ChatAppProvider: FC<ChatAppProviderProps> = ({ children }) => {
       setLoading(false);
       window.location.reload();
     } catch (error) {
-      setError("Error while creating account");
+      setError("Error while creating account" + error);
     }
   };
 
   const addFriends = async (name: string, accountAddress: string) => {
     try {
-      if (!name || !accountAddress)
-        throw new Error("Either name or account address not received");
       const contract = await connectingWithContract();
       const addMyFriend = await contract?.addFriend(accountAddress, name);
       setLoading(true);

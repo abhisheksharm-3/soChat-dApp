@@ -30,7 +30,7 @@ const NavbarComponent = () => {
     error,
   } = useContext(ChatAppContext);
   const menuItems = [
-    { label: "All Users", href: "/" },
+    { label: "All Users", href: "/all" },
     { label: "Chat", href: "/chat" },
     { label: "Contact", href: "/contact" },
     { label: "Settings", href: "/settings" },

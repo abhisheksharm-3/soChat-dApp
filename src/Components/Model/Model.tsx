@@ -1,5 +1,5 @@
 "use client";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useState, useEffect } from "react";
 import Image, { StaticImageData } from "next/image";
 import images from "../../../public/assets/assets/index.js";
 import { ChatAppContext } from "@/Context/ChatAppContext";
@@ -30,7 +30,7 @@ const Model: FC<ModelProps> = ({
   functionName,
 }) => {
   const [name, setName] = useState("");
-  const [accountAddress, setAccountAddress] = useState("");
+  const [accountAddress, setAccountAddress] = useState(address);
 
   const { loading } = useContext(ChatAppContext);
 
@@ -81,7 +81,7 @@ const Model: FC<ModelProps> = ({
               <Input
                 className="w-full md:w-64"
                 type="text"
-                placeholder={address || "Account Address"}
+                value={accountAddress}
                 onChange={(e) => setAccountAddress(e.target.value)}
                 startContent={
                   <Image

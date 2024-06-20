@@ -32,7 +32,7 @@ contract ChatApp {
     }
 
     //Create Account
-    function createAccout(string calldata name) external {
+    function createAccount(string calldata name) external {
         require(checkUserExist(msg.sender) == false, "User Already Exists");
         require(bytes(name).length > 0, "Username cannot be empty");
         userList[msg.sender].name = name;
