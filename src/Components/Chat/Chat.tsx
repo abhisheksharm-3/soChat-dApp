@@ -12,6 +12,7 @@ interface ChatProps {
   readMessage: (id: string) => void;
   friendMsg: Message[];
   account: string;
+  readUser: (id: string) => void;
   userName: string;
   loading: boolean;
   currentUserName: string;
@@ -23,6 +24,7 @@ const Chat: React.FC<ChatProps> = ({
   readMessage,
   friendMsg,
   account,
+  readUser,
   userName,
   loading,
   currentUserName,
@@ -40,11 +42,24 @@ const Chat: React.FC<ChatProps> = ({
     });
   }, [searchParams]);
 
+  useEffect(() => {
+    if (chatData.address) {
+      readMessage(searchParams.get("address") || "");
+      readUser(searchParams.get("address") || "");
+    }
+  }, [chatData]);
+
   return (
     <div className="max-w-lg mx-auto rounded-lg overflow-hidden shadow-lg">
       {currentUserAddress && currentUserName ? (
         <div className="p-4 flex items-center">
-          <Image src={images.accountName} alt="Image" height={70} width={70} className="rounded-full" />
+          <Image
+            src={images.accountName}
+            alt="Image"
+            height={70}
+            width={70}
+            className="rounded-full"
+          />
           <div className="ml-4">
             <h4 className="font-semibold">{currentUserName}</h4>
             <p className="text-gray-600">{currentUserAddress}</p>
@@ -58,7 +73,13 @@ const Chat: React.FC<ChatProps> = ({
         <div>
           {friendMsg.map((el, i) => (
             <div key={i} className="flex items-start mb-4">
-              <Image src={images.accountName} alt="Image" height={50} width={50} className="rounded-full" />
+              <Image
+                src={images.accountName}
+                alt="Image"
+                height={50}
+                width={50}
+                className="rounded-full"
+              />
               <div className="ml-3">
                 <div className="flex items-center">
                   <h4 className="font-semibold">
@@ -111,4 +132,3 @@ const Chat: React.FC<ChatProps> = ({
 };
 
 export default Chat;
-

@@ -20,9 +20,9 @@ interface User {
 }
 
 export interface Message {
-  sender: string;      // The address of the sender
-  timestamp: number;   // The timestamp of the message
-  msg: string;         // The message content
+  sender: string; // The address of the sender
+  timestamp: number; // The timestamp of the message
+  msg: string; // The message content
 }
 
 // Define the context type
@@ -67,9 +67,8 @@ const defaultContextValue: ChatAppContextType = {
   currentUserAddress: "",
 };
 
-export const ChatAppContext = createContext<ChatAppContextType>(
-  defaultContextValue
-);
+export const ChatAppContext =
+  createContext<ChatAppContextType>(defaultContextValue);
 
 interface ChatAppProviderProps {
   children: ReactNode;
@@ -131,7 +130,7 @@ export const ChatAppProvider: FC<ChatAppProviderProps> = ({ children }) => {
       const read = await contract?.readMessage(friendAddress);
       setFriendMsg(read || []);
     } catch (error) {
-      setError("No Messages");
+      console.log("No Messages");
     }
   };
 

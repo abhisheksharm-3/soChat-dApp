@@ -36,6 +36,7 @@ const Friend = () => {
       <div className="md:w-1/2 p-4">
         <Chat
           functionName={sendMessage}
+          readUser={readUser}
           readMessage={readMessage}
           friendMsg={friendMsg}
           account={account}
